@@ -43,7 +43,6 @@ class Servo:
             self.pi.set_servo_pulsewidth(self.pin, pos)
             sleep(0.25)
             return True
-        raise ValueError('Value %d out of range' % pos)
 
     # Adjust position by set delta value
     def __set_pos_relative(self, delta):
@@ -54,7 +53,6 @@ class Servo:
             self.pi.set_servo_pulsewidth(self.pin, new)
             sleep(0.25)
             return True
-        raise ValueError('Relative value %d makes value %d out of range' % (delta, new))
 
     # Map value range to new range
     def __translate(self, value, leftMin, leftMax, rightMin, rightMax):

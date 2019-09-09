@@ -59,5 +59,3 @@ def test_move():
     assert "out of range" in str(ex.value)
 
 
-
-

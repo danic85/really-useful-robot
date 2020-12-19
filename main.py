@@ -128,7 +128,15 @@ def main():
 
     battery = Battery(0, serial)
 
-    loop = True
+    pub.sendMessage('led:spinner', color='green')
+
+    print('starting sleep')
+    sleep(10)
+    print('ending sleep')
+
+    pub.sendMessage('led:spinner', color=False)
+
+    loop = False
     try:
         while loop:
             sleep(0.5)

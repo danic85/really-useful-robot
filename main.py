@@ -146,12 +146,12 @@ def main():
 
             # personality.behave()
 
-            if battery_check_time < time() - 1:
-                battery_check_time = time()
-                if not battery.safe_voltage():
-                    subprocess.call(['shutdown', '-h'], shell=False)
-                    loop = False
-                    quit()
+            # if battery_check_time < time() - 1:
+            #     battery_check_time = time()
+            #     if not battery.safe_voltage():
+            #         subprocess.call(['shutdown', '-h'], shell=False)
+            #         loop = False
+            #         quit()
 
             if mode == MODE_RANDOM_BEHAVIOUR:
                 if time() - start > delay:

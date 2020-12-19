@@ -52,7 +52,7 @@ class ArduinoSerial:
         :param identifier: an identifier or list / range of identifiers, pin or LED number
         :param message: the packet to send to the arduino
         """
-        print('serial sending ' + str(type) + ' - ' + str(identifier) + ' = ' + str(message))
+        # print('serial sending ' + str(type) + ' - ' + str(identifier) + ' = ' + str(message))
         if type == ArduinoSerial.DEVICE_SERVO:
             write_order(self.serial_file, Order.SERVO)
             write_i8(self.serial_file, identifier)
@@ -86,4 +86,4 @@ class ArduinoSerial:
             return value
 
 
-        print(self.serial_file)
+        # print(self.serial_file)

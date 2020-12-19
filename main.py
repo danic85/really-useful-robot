@@ -128,15 +128,7 @@ def main():
 
     battery = Battery(0, serial)
 
-    pub.sendMessage('led:spinner', color='green')
-
-    print('starting sleep')
-    sleep(10)
-    print('ending sleep')
-
-    pub.sendMessage('led:spinner', color=False)
-
-    loop = False
+    loop = True
     try:
         while loop:
             sleep(0.5)
@@ -166,11 +158,13 @@ def main():
 
                     if tracking.track_largest_match():
                         led.eye('green')
+                        pub.sendMessage('led:spinner', color=None)
                         continue
                     elif motion.read() <= 0:
                         led.eye('red')
                         continue
                     else:
+                        pub.sendMessage('led:spinner', color='blue')
                         pan.move(Config.PAN_START_POS)
                         tilt.move(Config.TILT_START_POS)
                         led.eye('blue')
@@ -190,8 +184,8 @@ def main():
                     # action = action + 1
                     # if action == 6:
                     #     action = 1
-                    # start = time()
-                    # delay = random.randint(2, 15)
+                    start = time()
+                    delay = random.randint(2, 15)
 
                     # vision.detect()
                     # print(delay)

@@ -29,9 +29,11 @@ class LED:
         sleep(0.1)
         self.set(self.middle, LED.COLOUR_GREEN)
         self.animation = False
+        self.thread = None
 
     def exit(self):
         self.animation = False
+        self.thread.join()
         self.set(Config.LED_ALL, LED.COLOUR_OFF)
         sleep(1)
 
@@ -60,19 +62,22 @@ class LED:
             self.set(self.middle, LED.COLOUR_MAP[color])
 
     def spinner(self, color):
-        if not color:
+
+        if not color and self.animation:
+            print('SPINNER STOPPING')
+            self.thread.join()
             self.animation = False
             return
+        print('SPINNER STARTING')
+        self.thread = threading.Thread(target=self.spinner_animate, args=(color,))
+        self.thread.start()
         self.animation = True
-        self.spinner_animate(color)
+
 
     def spinner_animate(self, color, index=1):
-        if not self.animation:
-            return
-
         sleep(.3)
 
-        self.set(range(1, 6), LED.COLOUR_OFF)
+        self.set(range(1, 7), LED.COLOUR_OFF)
         self.set(index, LED.COLOUR_MAP[color])
 
         index = (index + 1) % self.count
@@ -80,4 +85,5 @@ class LED:
         if index == 0:
             index = 1
 
-        self.spinner(color, index)
+        if self.animation:
+            self.spinner_animate(color, index)

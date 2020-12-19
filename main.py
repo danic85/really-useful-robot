@@ -124,9 +124,9 @@ def main():
         action = 1
         # chirp.send('hi')
 
-    battery_check_time = time()
+    # battery_check_time = time()
 
-    battery = Battery(0, serial)
+    # battery = Battery(0, serial)
 
     loop = True
     try:
@@ -156,7 +156,7 @@ def main():
             if mode == MODE_RANDOM_BEHAVIOUR:
                 if time() - start > delay:
 
-                    if tracking.track_largest_match():
+                    if vision.detect(): #tracking.track_largest_match():
                         led.eye('green')
                         pub.sendMessage('led:spinner', color=None)
                         continue
@@ -165,8 +165,8 @@ def main():
                         continue
                     else:
                         pub.sendMessage('led:spinner', color='blue')
-                        pan.move(Config.PAN_START_POS)
-                        tilt.move(Config.TILT_START_POS)
+                        # pan.move(Config.PAN_START_POS)
+                        # tilt.move(Config.TILT_START_POS)
                         led.eye('blue')
 
                     # if action == 1:

@@ -68,6 +68,11 @@ class LED:
             self.thread.join()
             self.animation = False
             return
+
+        if self.animation:
+            print('SPINNER ALREADY STARTED')
+            return
+
         print('SPINNER STARTING')
         self.thread = threading.Thread(target=self.spinner_animate, args=(color,))
         self.thread.start()

@@ -91,6 +91,7 @@ class ArduinoCommandThread(CommandThread):
 
             with self.serial_lock:
                 if type == ArduinoSerial.DEVICE_SERVO:
+                    print('SERVO COMMAND: ' + str(identifier) + ' ' + str(message))
                     write_order(self.serial_file, Order.SERVO)
                     write_i8(self.serial_file, identifier)
                     write_i16(self.serial_file, int(message))
@@ -116,9 +117,9 @@ class ArduinoCommandThread(CommandThread):
                     write_i8(self.serial_file, identifier)
                     write_i8(self.serial_file, message)
 
-                # elif type == ArduinoSerial.DEVICE_PIN_READ:
-                #     write_order(self.serial_file, Order.READ)
-                #     write_i8(self.serial_file, identifier)
-                #     value = read_i8(self.serial_file)
-                #     return value
+                elif type == ArduinoSerial.DEVICE_PIN_READ:
+                    write_order(self.serial_file, Order.READ)
+                    write_i8(self.serial_file, identifier)
+                    value = read_i8(self.serial_file)
+                    pub.sendMessage('serial:receive', identifier=identifier, payload=value)
             time.sleep(rate)

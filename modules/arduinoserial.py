@@ -42,6 +42,15 @@ class ArduinoSerial:
         print("Connected to Arduino")
         return serial_file
 
+    def receive(self):
+        print('SERIAL:READ')
+        for _ in range(20):
+            value = read_i8(self.serial_file)
+            print(value)
+            if value != 5:
+                return value
+        return 0
+
     def send(self, type, identifier, message):
         """
         Examples:
@@ -82,8 +91,8 @@ class ArduinoSerial:
         elif type == ArduinoSerial.DEVICE_PIN_READ or type == 'pin_read':
             write_order(self.serial_file, Order.READ)
             write_i8(self.serial_file, identifier)
-            value = read_i8(self.serial_file)
-            return value
+            # value = read_i8(self.serial_file)
+            # return value
 
 
         # print(self.serial_file)

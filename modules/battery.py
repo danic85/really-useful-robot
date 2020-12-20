@@ -11,7 +11,8 @@ class Battery:
         self.serial = serial
 
     def check(self):
-        val = self.serial.send(ArduinoSerial.DEVICE_PIN_READ, 0, 0)
+        self.serial.send(ArduinoSerial.DEVICE_PIN_READ, 0, 0)
+        val = self.serial.receive()
         if val == 5.0:
             return 0
         self.readings.append(val)

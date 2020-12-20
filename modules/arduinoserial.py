@@ -10,7 +10,8 @@ rate = 1 / 2000  # 2000 Hz (limit the rate of communication with the arduino)
 
 class ArduinoSerial:
     """
-    Communicate with Arduino over Serial
+    Communicate with Arduino over Serial via threads
+    https://github.com/araffin/python-arduino-serial/blob/master/examples/arduino_threads.py
     """
     DEVICE_LED = 0
     DEVICE_SERVO = 1
@@ -33,10 +34,22 @@ class ArduinoSerial:
         # Event to notify threads that they should terminate
         self.exit_event = threading.Event()
 
-        threads = [ArduinoCommandThread(self.serial_file, self.command_queue, self.exit_event, self.n_received_semaphore, self.serial_lock),
+        self.threads = [ArduinoCommandThread(self.serial_file, self.command_queue, self.exit_event, self.n_received_semaphore, self.serial_lock),
                    ListenerThread(self.serial_file, self.exit_event, self.n_received_semaphore, self.serial_lock)]
-        for t in threads:
+        for t in self.threads:
             t.start()
+
+    def exit(self):
+        print('1')
+        self.command_queue.clear()
+        print('2')
+        self.exit_event.set()
+        print('3')
+        self.n_received_semaphore.release()
+        print('4')
+        for t in self.threads:
+            t.join()
+        print('5')
 
 
     @staticmethod
@@ -120,6 +133,7 @@ class ArduinoCommandThread(CommandThread):
                 elif type == ArduinoSerial.DEVICE_PIN_READ:
                     write_order(self.serial_file, Order.READ)
                     write_i8(self.serial_file, identifier)
-                    value = read_i8(self.serial_file)
-                    pub.sendMessage('serial:receive', identifier=identifier, payload=value)
+                    # value = read_i8(self.serial_file)
+                    # pub.sendMessage('serial:receive', identifier=identifier, payload=value)
             time.sleep(rate)
+        print("Command Thread Exited")

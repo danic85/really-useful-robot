@@ -24,6 +24,7 @@ class LED:
         self.middle = kwargs.get('middle', 0)
         self.all = range(self.count)
         pub.subscribe(self.set, 'led')
+        pub.subscribe(self.eye, 'led:eye')
         pub.subscribe(self.spinner, 'led:spinner')
 
         self.leds = []
@@ -37,8 +38,9 @@ class LED:
         self.thread = None
 
     def exit(self):
-        self.animation = False
-        self.thread.join()
+        if self.animation:
+            self.animation = False
+            self.thread.join()
         self.set(Config.LED_ALL, LED.COLOUR_OFF)
         sleep(1)
 

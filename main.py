@@ -160,15 +160,18 @@ def main():
                 # led.set(Config.LED_MIDDLE, (random.randint(0, 5), random.randint(0, 5), random.randint(0, 5)))
 
                 if len(v) > 0:  # tracking.track_largest_match():
-                    led.eye('green')
-                    pub.sendMessage('led:spinner', color=None)
+                    # led.eye('green')
+                    pub.sendMessage('led:eye', color="green")
+                    # pub.sendMessage('led:spinner', color=None)
                 elif motion.read() <= 0:
-                    led.eye('red')
+                    pub.sendMessage('led:eye', color="red")
+                    # led.eye('red')
                 else:
                     # pan.move(Config.PAN_START_POS)
                     # tilt.move(Config.TILT_START_POS)
-                    pub.sendMessage('led:spinner', color='blue')
-                    led.eye('blue')
+                    # pub.sendMessage('led:spinner', color='blue')
+                    pub.sendMessage('led:eye', color="blue")
+                    # led.eye('blue')
 
                 if time() - start > delay:
 
@@ -265,6 +268,7 @@ def main():
         quit()
 
     finally:
+        serial.exit()
         led.exit()
         #chirp.send('off')
         chirp.exit()

@@ -131,7 +131,7 @@ def main():
     loop = True
     try:
         while loop:
-            sleep(0.5)
+            sleep(1 / Config.LOOP_FREQUENCY)
             """
             Basic behaviour:
             
@@ -154,20 +154,23 @@ def main():
             #         quit()
 
             if mode == MODE_RANDOM_BEHAVIOUR:
-                if time() - start > delay:
+                v = vision.detect()
+                print(v)
+                # motion.read()
+                # led.set(Config.LED_MIDDLE, (random.randint(0, 5), random.randint(0, 5), random.randint(0, 5)))
 
-                    if vision.detect(): #tracking.track_largest_match():
-                        led.eye('green')
-                        pub.sendMessage('led:spinner', color=None)
-                        continue
-                    elif motion.read() <= 0:
-                        led.eye('red')
-                        continue
-                    else:
-                        pub.sendMessage('led:spinner', color='blue')
-                        # pan.move(Config.PAN_START_POS)
-                        # tilt.move(Config.TILT_START_POS)
-                        led.eye('blue')
+                if len(v) > 0:  # tracking.track_largest_match():
+                    led.eye('green')
+                    pub.sendMessage('led:spinner', color=None)
+                elif motion.read() <= 0:
+                    led.eye('red')
+                else:
+                    # pan.move(Config.PAN_START_POS)
+                    # tilt.move(Config.TILT_START_POS)
+                    pub.sendMessage('led:spinner', color='blue')
+                    led.eye('blue')
+
+                if time() - start > delay:
 
                     # if action == 1:
                     #     pass
